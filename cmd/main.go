@@ -1,4 +1,4 @@
-package db
+package main
 
 import (
 	"log"
@@ -10,7 +10,7 @@ import (
 )
 
 func main() {
-	db, err := db.Create("user", "password")
+	db, err := db.Create("root", "")
 	if err != nil {
 		panic(err)
 	}
@@ -21,6 +21,11 @@ func main() {
 	http.HandleFunc("/v1/report", func(w http.ResponseWriter, r *http.Request) {
 		bankIDString := r.URL.Query().Get("bank_id")
 		reportType := r.URL.Query().Get("report_type")
+
+		if bankIDString == "" || reportType == "" {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
 
 		bankID, err := strconv.Atoi(bankIDString)
 		if err != nil {
@@ -36,6 +41,7 @@ func main() {
 		if err != nil {
 			log.Print(err)
 		}
+
 		err = report.SendReport()
 		if err != nil {
 			log.Print(err)

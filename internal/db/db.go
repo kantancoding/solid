@@ -9,7 +9,7 @@ import (
 )
 
 func Create(username, password string) (*sql.DB, error) {
-	creds := fmt.Sprintf("%s:%s@/dbname", username, password)
+	creds := fmt.Sprintf("%s:%s@/payment", username, password)
 	db, err := sql.Open("mysql", creds)
 	if err != nil {
 		return nil, err
