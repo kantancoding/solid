@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"srp/internal/database"
 	"srp/internal/db"
 	"srp/internal/reportfactory"
 )
@@ -37,7 +38,8 @@ func main() {
 			log.Print(err)
 		}
 
-		err = report.SaveReport()
+		database := database.Construct()
+		err = database.SaveReport(report.BankID, report.Type, report.Total, db)
 		if err != nil {
 			log.Print(err)
 		}
